@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="2026 Q4 課表">
+<meta name="theme-color" content="#0f4c5c">
+<title>2026 第四季課表</title>
+<style>
+:root{
+  --bg:#f3f6f7;--card:#fff;--ink:#1b2a30;--sub:#5b6d75;--line:#dbe4e8;--brand:#0f4c5c;--brand2:#1f7a8c;
+  --chip:#e6eef1;--chipon:#0f4c5c;--chipoff:#fff;--live:#d9480f;--star:#e0a100;--me:#e8f4f7;--warn:#fff6e0;--warnline:#e6c46a;
+  --jc:#2b6cb0;--ebm:#2f855a;--cross:#805ad5;--forum:#b7791f;--tri:#c05621;--mm:#b83280;--ohca:#c53030;
+  --core:#0f4c5c;--ext:#319795;--mtg:#4a5568;--oth:#718096;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#10181c;--card:#18242a;--ink:#e8f0f3;--sub:#9fb2ba;--line:#2a3a42;--brand:#4fb3c8;--brand2:#6cc4d6;
+  --chip:#22333b;--chipon:#4fb3c8;--chipoff:#0d1519;--live:#ff8a4c;--star:#f6c445;--me:#1b323a;--warn:#2d2813;--warnline:#8a7430;}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  padding-bottom:env(safe-area-inset-bottom)}
+header{background:linear-gradient(135deg,#0f4c5c,#1f7a8c);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+header h1{margin:0;font-size:19px;line-height:1.3}
+header p{margin:4px 0 0;font-size:13px;opacity:.9}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);padding:8px 12px;border-bottom:1px solid var(--line)}
+.days{display:flex;gap:8px;margin-bottom:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;min-width:64px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px;font-weight:600}
+.days button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.days button.past{opacity:.6}
+.days small{display:block;font-weight:400;font-size:12px;opacity:.85;white-space:nowrap}
+.search{display:flex;gap:8px}
+.search input,.search select,.tools select{font-size:16px;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-width:0}
+.search input{flex:1}
+.search select{max-width:44%}
+.filters{padding:10px 12px 0}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:6px 11px;border-radius:999px;border:0;background:var(--chip);color:var(--ink);font-size:14px}
+.chip.on{background:var(--chipon);color:var(--chipoff);font-weight:600}
+.tools{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:13px;color:var(--sub)}
+.tools .grow{flex:1}
+.tools button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 10px;border-radius:8px;font-size:13px}
+.tools select{font-size:13px;padding:6px 8px;border-radius:8px;max-width:34%}
+.banner{margin:10px 12px 0;padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:14px}
+.banner b{color:var(--live)}
+main{padding:4px 12px 40px}
+.slot{margin:16px 0 6px;font-size:15px;font-weight:700;color:var(--brand);display:flex;align-items:center;gap:8px}
+.slot::after{content:"";flex:1;height:1px;background:var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--oth);border-radius:12px;padding:10px 12px;margin:0 0 8px}
+.card.t-jc{border-left-color:var(--jc)}.card.t-ebm{border-left-color:var(--ebm)}.card.t-cross{border-left-color:var(--cross)}
+.card.t-forum{border-left-color:var(--forum)}.card.t-tri{border-left-color:var(--tri)}.card.t-mm{border-left-color:var(--mm)}
+.card.t-ohca{border-left-color:var(--ohca)}.card.t-core{border-left-color:var(--core)}.card.t-ext{border-left-color:var(--ext)}
+.card.t-mtg{border-left-color:var(--mtg)}
+.card.live{box-shadow:0 0 0 2px var(--live)}
+.card.past{opacity:.62}
+.card.me{background:var(--me)}
+.top{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);flex-wrap:wrap}
+.time{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+.room{background:var(--chip);border-radius:6px;padding:1px 7px;color:var(--ink)}
+.livetag{background:var(--live);color:#fff;border-radius:6px;padding:1px 7px;font-weight:600}
+.metag{background:var(--brand);color:var(--chipoff);border-radius:6px;padding:1px 7px;font-weight:600}
+.star{margin-left:auto;border:0;background:none;font-size:22px;line-height:1;color:var(--sub);padding:2px 4px}
+.star.on{color:var(--star)}
+.card h3{margin:4px 0 2px;font-size:16px;line-height:1.4}
+.tag{font-size:12px;color:var(--sub)}
+.sub{font-size:14px;margin-top:2px}
+.ppl{font-size:14px;margin-top:6px}
+.ppl div{display:flex;gap:8px;padding:1px 0}
+.ppl span{flex:none;min-width:4.6em;color:var(--sub);font-size:13px}
+.btn{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:9px;background:var(--brand);color:var(--chipoff);text-decoration:none;font-size:14px;font-weight:600}
+details{margin-top:6px}
+summary{cursor:pointer;color:var(--brand);font-size:14px;font-weight:600;padding:4px 0;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ "}
+details[open] summary::before{content:"▾ "}
+ul.items{list-style:none;margin:4px 0 0;padding:0}
+ul.items li{padding:7px 0;border-top:1px dashed var(--line);font-size:15px}
+.empty{text-align:center;color:var(--sub);padding:40px 10px}
+footer{padding:10px 16px 40px;font-size:13px;color:var(--sub)}
+footer h2{font-size:15px;color:var(--ink);margin:14px 0 6px}
+footer a{color:var(--brand)}
+footer li{margin:4px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>2026 第四季課表（10–12 月）</h1>
+  <p>住院醫師教學課程｜v.2</p>
+  <p>共 35 堂課・7 個上課日・10/1–12/17</p>
+</header>
+
+<div class="bar">
+  <div class="days" id="days"></div>
+  <div class="search">
+    <input id="q" type="search" placeholder="搜尋課程、老師、學員" autocomplete="off" enterkeyhint="search">
+    <select id="res" aria-label="住院醫師"></select>
+  </div>
+</div>
+<div class="filters">
+  <div class="chips" id="chips"></div>
+  <div class="tools">
+    <span class="grow" id="count"></span>
+    <select id="room" aria-label="地點"></select>
+    <button id="toggleAll">全部展開</button>
+    <button id="goNow">跳到下一堂</button>
+  </div>
+</div>
+<div id="banner" class="banner" hidden></div>
+<main id="list"></main>
+
+<footer>
+  <h2>說明</h2>
+  <ul>
+    <li>資料來源：Word 檔「2026第四季課表(10-12月) v.2」。標示「TBD」者為尚待確認的主題。</li>
+    <li>「全體」＝全體住院醫師。右上角選擇住院醫師後，只顯示該位學員的場次與全體場次，並以顏色標出「點名學員」的課。</li>
+    <li>10/15 與 12/17 的線上場次連結取自原檔（原檔另附 QR code），按下按鈕即可開啟 Google Meet。</li>
+    <li>點選卡片右上角的星號可加入「我的課表」，會儲存在這支手機的瀏覽器中，不會同步到其他裝置。</li>
+  </ul>
+</footer>
+
+<script>
+"use strict";
+/* ---------- 基本設定 ---------- */
+var TYPES=[
+  ["all","全部"],["jc","期刊研讀"],["ebm","個案／專題"],["cross","跨領域教學"],["forum","座談會"],
+  ["tri","三日內返診"],["mm","MM 討論"],["ohca","OHCA 討論"],["core","核心課程"],["ext","院外課程"],["mtg","會議"],["oth","午餐／返回"],["mine","★ 我的課表"]
+];
+var TYPENAME={jc:"期刊研讀",ebm:"個案／專題教學",cross:"跨領域教學課程",forum:"住院醫師座談會",tri:"三日內返診暨醫療品質討論會",
+  mm:"MM 死亡病例討論會",ohca:"院外心跳停止（OHCA）討論會",core:"核心課程（Book reading）",ext:"院外課程",mtg:"會議",oth:"其他"};
+var DATES=[["10/1","2026-10-01"],["10/15","2026-10-15"],["11/5","2026-11-05"],["11/19","2026-11-19"],["12/1","2026-12-01"],["12/3","2026-12-03"],["12/17","2026-12-17"]];
+var DISP={"10/1":"2026-10-01"};DATES.forEach(function(d){DISP[d[0]]=d[1];});
+var RESIDENTS=[["雅文","蕭雅文"],["雅萱","吳雅萱"],["泊皓","邱泊皓"],["士勛","林士勛"],["全慧","高全慧"],["惇議","柯惇議"],["友淳","蕭友淳"],["愷翎","劉愷翎"]];
+var MEET1="https://meet.google.com/ehu-cibb-bpo",MEET2="https://meet.google.com/sri-esjr-wxr";
+var HQ="急診會議室";
+
+var DATA=[];
+/* A({d,s,e,t,n,sub,ppl:[[標籤,內容]],res:[簡稱],all:是否全體,r,link,items}) */
+function A(o){o.sub=o.sub||"";o.ppl=o.ppl||[];o.res=o.res||[];o.all=!!o.all;o.items=o.items||[];o.link=o.link||"";DATA.push(o);}
+function P(t,l){var a=[];if(t)a.push(["指導",t]);if(l)a.push(["學員",l]);return a;}
+
+/* ===== 10/1 ===== */
+A({d:"10/1",s:"08:00",e:"09:30",t:"jc",n:"期刊研讀",sub:"主題：TBD",ppl:P("黃昭硯 主任","邱泊皓 醫師"),res:["泊皓"],r:HQ});
+A({d:"10/1",s:"09:30",e:"11:30",t:"ebm",n:"以實證醫學為導向之個案討論",ppl:P("王柏元 主任","全體住院醫師"),all:true,r:HQ});
+A({d:"10/1",s:"11:30",e:"12:00",t:"forum",n:"住院醫師座談會",ppl:P("黃昭硯 主任、王柏元 主任","全體住院醫師"),all:true,r:HQ});
+A({d:"10/1",s:"12:00",e:"13:00",t:"cross",n:"跨領域教學課程",ppl:P("跨領域大師","全體住院醫師"),all:true,r:HQ});
+A({d:"10/1",s:"13:00",e:"14:00",t:"tri",n:"三日內返診暨醫療品質討論會",ppl:P("賴宜欣 醫師","柯惇議 醫師"),res:["惇議"],r:HQ});
+A({d:"10/1",s:"14:00",e:"15:00",t:"mm",n:"MM 死亡病例討論會",ppl:P("賴宜欣 醫師","蕭友淳 醫師"),res:["友淳"],r:HQ});
+A({d:"10/1",s:"15:00",e:"17:00",t:"core",n:"核心課程",sub:"Book reading lesson 22",ppl:P("賴宜欣 醫師","蕭雅文 醫師"),res:["雅文"],r:HQ});
+/* ===== 10/15 ===== */
+A({d:"10/15",s:"08:00",e:"13:00",t:"ext",n:"ECMO",ppl:P("ECMO 大師","全體住院醫師"),all:true,r:"中國附醫"});
+A({d:"10/15",s:"13:00",e:"14:30",t:"oth",n:"午餐＆返回",ppl:[["學員","全員返回"]],all:true,r:"—"});
+A({d:"10/15",s:"14:30",e:"15:30",t:"ohca",n:"院外心跳停止（OHCA）討論會",ppl:P("鍾錡栥 醫師","高全慧 醫師"),res:["全慧"],r:"線上會議",link:MEET1});
+A({d:"10/15",s:"15:30",e:"17:30",t:"core",n:"核心課程",sub:"Book reading lesson 23",ppl:P("鍾錡栥 醫師","蕭雅文 醫師"),res:["雅文"],r:"線上會議",link:MEET1});
+/* ===== 11/5 ===== */
+A({d:"11/5",s:"08:00",e:"10:30",t:"mtg",n:"CCC",ppl:[["主持人","黃昭硯 主任、王柏元 主任"],["導師","全體導師"],["重大決議","學習討論"]],
+  res:["全慧","雅萱","泊皓","士勛","友淳","愷翎"],r:HQ,
+  items:["高全慧","吳雅萱","邱泊皓","林士勛","蕭友淳（觀摩）","劉愷翎（觀摩）"],itemsTitle:"學員名單"});
+A({d:"11/5",s:"10:30",e:"11:00",t:"forum",n:"住院醫師座談會",ppl:P("黃昭硯 主任、王柏元 主任","全體住院醫師"),all:true,r:HQ});
+A({d:"11/5",s:"11:00",e:"12:00",t:"ohca",n:"院外心跳停止（OHCA）討論會",ppl:P("鍾錡栥 醫師","林士勛 醫師"),res:["士勛"],r:HQ});
+A({d:"11/5",s:"12:00",e:"13:00",t:"cross",n:"跨領域教學課程",ppl:P("鍾錡栥 醫師","全體住院醫師"),all:true,r:HQ});
+A({d:"11/5",s:"13:00",e:"15:00",t:"core",n:"核心課程",sub:"Book reading lesson 24",ppl:P("王柏元 主任","林士勛 醫師"),res:["士勛"],r:HQ});
+A({d:"11/5",s:"15:00",e:"17:00",t:"core",n:"核心課程",sub:"Book reading lesson 25",ppl:P("王柏元 主任","高全慧 醫師"),res:["全慧"],r:HQ});
+/* ===== 11/19 ===== */
+A({d:"11/19",s:"08:00",e:"12:30",t:"ext",n:"醫法倫論壇",ppl:P("醫法倫大師","全體住院醫師"),all:true,r:"中山附醫"});
+A({d:"11/19",s:"12:30",e:"13:30",t:"cross",n:"跨領域教學課程",ppl:P("跨領域大師","全體住院醫師"),all:true,r:HQ});
+A({d:"11/19",s:"13:30",e:"14:30",t:"tri",n:"三日內返診暨醫療品質討論會",ppl:P("賴宜欣 醫師","邱泊皓 醫師"),res:["泊皓"],r:HQ});
+A({d:"11/19",s:"14:30",e:"15:30",t:"mm",n:"MM 死亡病例討論會",ppl:P("賴宜欣 醫師","吳雅萱 醫師"),res:["雅萱"],r:HQ});
+A({d:"11/19",s:"15:30",e:"17:30",t:"core",n:"核心課程",sub:"Book reading lesson 26",ppl:P("王柏元 主任","蕭友淳 醫師"),res:["友淳"],r:HQ});
+/* ===== 12/1 ===== */
+A({d:"12/1",s:"08:00",e:"09:00",t:"mtg",n:"研究會議",sub:"主題：TBD",ppl:[["指導醫師","葉兆斌 院長、王柏元 主任"],["報告者","李宗翰 醫師"]],r:HQ});
+A({d:"12/1",s:"09:00",e:"10:00",t:"mtg",n:"教育委員會",sub:"報告事項／討論主題：TBD",ppl:[["主持人","黃昭硯 主任、王柏元 主任"],["與會人員","全體教委會委員"]],r:HQ});
+/* ===== 12/3 ===== */
+A({d:"12/3",s:"08:30",e:"09:30",t:"jc",n:"期刊研讀",sub:"主題：TBD",ppl:P("黃昭硯 主任","高全慧 醫師"),res:["全慧"],r:"多功能教室8"});
+A({d:"12/3",s:"09:30",e:"11:30",t:"ebm",n:"超音波",sub:"主題：超音波 procedure",ppl:P("陳家慶 主任","全體住院醫師"),all:true,r:"多功能教室8"});
+A({d:"12/3",s:"11:30",e:"12:00",t:"forum",n:"住院醫師座談會",ppl:P("黃昭硯 主任、王柏元 主任","全體住院醫師"),all:true,r:"多功能教室8"});
+A({d:"12/3",s:"12:00",e:"13:00",t:"cross",n:"跨領域教學課程",ppl:P("跨領域大師","全體住院醫師"),all:true,r:HQ});
+A({d:"12/3",s:"13:00",e:"14:00",t:"tri",n:"三日內返診暨醫療品質討論會",ppl:P("賴宜欣 醫師","蕭友淳 醫師"),res:["友淳"],r:HQ});
+A({d:"12/3",s:"14:00",e:"15:00",t:"mm",n:"MM 死亡病例討論會",ppl:P("賴宜欣 醫師","邱泊皓 醫師"),res:["泊皓"],r:HQ});
+A({d:"12/3",s:"15:00",e:"17:00",t:"core",n:"核心課程",sub:"Book reading lesson 27",ppl:P("王柏元 主任","吳雅萱 醫師"),res:["雅萱"],r:HQ});
+/* ===== 12/17 ===== */
+A({d:"12/17",s:"08:00",e:"13:00",t:"ext",n:"婦產科",ppl:P("婦產科大師","全體住院醫師"),all:true,r:"童綜合"});
+A({d:"12/17",s:"13:00",e:"14:30",t:"oth",n:"午餐＆返回",ppl:[["學員","全員返回"]],all:true,r:"—"});
+A({d:"12/17",s:"14:30",e:"15:30",t:"ohca",n:"院外心跳停止（OHCA）討論會",ppl:P("鍾錡栥 醫師","劉愷翎 醫師"),res:["愷翎"],r:"線上會議",link:MEET2});
+A({d:"12/17",s:"15:30",e:"17:30",t:"core",n:"核心課程",sub:"Book reading lesson 28",ppl:P("鍾錡栥 醫師","柯惇議 醫師"),res:["惇議"],r:"線上會議",link:MEET2});
+
+/* ---------- 工具 ---------- */
+function mm(t){var p=t.split(":");return (+p[0])*60+(+p[1]);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function wd(d){var p=DISP[d].split("-");return "日一二三四五六".charAt(new Date(Date.UTC(+p[0],+p[1]-1,+p[2])).getUTCDay());}
+function fullName(s){for(var i=0;i<RESIDENTS.length;i++)if(RESIDENTS[i][0]===s)return RESIDENTS[i][1];return s;}
+var DORDER={};DATES.forEach(function(d,i){DORDER[d[0]]=i;});
+DATA.forEach(function(x){x.sm=mm(x.s);x.em=mm(x.e);x.iso=DISP[x.d];x.id=x.d+"|"+x.s+"|"+x.n+(x.sub?"|"+x.sub:"");});
+DATA.sort(function(a,b){return DORDER[a.d]-DORDER[b.d]||a.sm-b.sm;});
+
+function taipeiNow(){
+  var o={};
+  new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false})
+    .formatToParts(new Date()).forEach(function(p){o[p.type]=p.value;});
+  return {date:o.year+"-"+o.month+"-"+o.day,min:((+o.hour)%24)*60+(+o.minute),ym:o.year+"/"+o.month};
+}
+var ST={day:"all",type:"all",q:"",room:"all",res:"all",open:false};
+var MINE={};
+try{MINE=JSON.parse(localStorage.getItem("sched2026q4_mine")||"{}")||{};}catch(e){MINE={};}
+try{var r0=localStorage.getItem("sched2026q4_res");if(r0)ST.res=r0;}catch(e){}
+function saveMine(){try{localStorage.setItem("sched2026q4_mine",JSON.stringify(MINE));}catch(e){}}
+function saveRes(){try{localStorage.setItem("sched2026q4_res",ST.res);}catch(e){}}
+
+function mine(x){return ST.res!=="all"&&x.res.indexOf(ST.res)>=0;}
+function matches(x){
+  if(ST.day!=="all"&&x.d!==ST.day)return false;
+  if(ST.type==="mine"){if(!MINE[x.id])return false;}
+  else if(ST.type!=="all"&&x.t!==ST.type)return false;
+  if(ST.room!=="all"&&x.r!==ST.room)return false;
+  if(ST.res!=="all"&&!(x.all||x.res.indexOf(ST.res)>=0))return false;
+  if(ST.q){
+    var hay=(x.d+" "+x.n+" "+x.sub+" "+x.r+" "+TYPENAME[x.t]+" "+x.ppl.map(function(p){return p.join(" ");}).join(" ")+" "+x.items.join(" ")+" "+x.res.map(fullName).join(" ")).toLowerCase();
+    var terms=ST.q.toLowerCase().split(/\s+/).filter(Boolean);
+    for(var k=0;k<terms.length;k++){if(hay.indexOf(terms[k])<0)return false;}
+  }
+  return true;
+}
+
+function render(){
+  var now=taipeiNow(),list=DATA.filter(matches),html="",lastS="",lastD="";
+  list.forEach(function(x){
+    if(ST.day==="all"){
+      if(x.d!==lastD){html+='<div class="slot">'+x.d+'（'+wd(x.d)+'）</div>';lastD=x.d;}
+    }else if(x.s!==lastS){html+='<div class="slot">'+x.s+'</div>';lastS=x.s;}
+    var isLive=now.date===x.iso&&now.min>=x.sm&&now.min<x.em;
+    var past=x.iso<now.date||(x.iso===now.date&&now.min>=x.em);
+    var star=!!MINE[x.id],me=mine(x);
+    html+='<article class="card t-'+x.t+(isLive?" live":"")+(past&&!isLive?" past":"")+(me?" me":"")+'" data-id="'+esc(x.id)+'">'
+      +'<div class="top"><span class="time">'+x.s+'–'+x.e+'</span><span class="room">'+esc(x.r)+'</span>'
+      +(isLive?'<span class="livetag">進行中</span>':'')+(me?'<span class="metag">我的課</span>':'')
+      +'<button class="star'+(star?" on":"")+'" aria-label="加入我的課表" data-star="'+esc(x.id)+'">'+(star?"★":"☆")+'</button></div>'
+      +'<h3>'+esc(x.n)+'</h3>'+(TYPENAME[x.t]===x.n?'':'<div class="tag">'+TYPENAME[x.t]+'</div>')
+      +(x.sub?'<div class="sub">'+esc(x.sub)+'</div>':'');
+    if(x.ppl.length){
+      html+='<div class="ppl">'+x.ppl.map(function(p){return '<div><span>'+esc(p[0])+'</span><b style="font-weight:500">'+esc(p[1])+'</b></div>';}).join("")+'</div>';
+    }
+    if(x.link)html+='<a class="btn" href="'+x.link+'" target="_blank" rel="noopener">加入線上會議（Google Meet）</a>';
+    if(x.items.length){
+      html+='<details'+(ST.open?' open':'')+'><summary>'+(x.itemsTitle||"詳細")+'（'+x.items.length+'）</summary><ul class="items">'
+        +x.items.map(function(i){return '<li>'+esc(i)+'</li>';}).join("")+'</ul></details>';
+    }
+    html+='</article>';
+  });
+  document.getElementById("list").innerHTML=html||'<div class="empty">沒有符合條件的課程</div>';
+  document.getElementById("count").textContent="共 "+list.length+" 堂";
+  document.getElementById("toggleAll").textContent=ST.open?"全部收合":"全部展開";
+}
+
+function draw(){render();}
+
+function buildDays(){
+  var el=document.getElementById("days"),now=taipeiNow();
+  var b='<button data-day="all">全部<small>'+DATA.length+' 堂</small></button>';
+  DATES.forEach(function(d){
+    var c=DATA.filter(function(x){return x.d===d[0];}).length;
+    b+='<button data-day="'+d[0]+'"'+(d[1]<now.date?' class="past"':'')+'>'+d[0]+'（'+wd(d[0])+'）<small>'+c+' 堂</small></button>';
+  });
+  el.innerHTML=b;
+  el.querySelectorAll("button").forEach(function(x){
+    x.addEventListener("click",function(){ST.day=x.dataset.day;syncUI();draw();window.scrollTo(0,0);});
+  });
+}
+function buildChips(){
+  var el=document.getElementById("chips");
+  el.innerHTML=TYPES.map(function(t){return '<button class="chip" data-t="'+t[0]+'">'+t[1]+'</button>';}).join("");
+  el.querySelectorAll(".chip").forEach(function(b){
+    b.addEventListener("click",function(){ST.type=b.dataset.t;syncUI();draw();});
+  });
+}
+function buildRes(){
+  document.getElementById("res").innerHTML='<option value="all">全部住院醫師</option>'
+    +RESIDENTS.map(function(r){return '<option value="'+r[0]+'">'+r[1]+'</option>';}).join("");
+  document.getElementById("res").value=ST.res;
+}
+function buildRooms(){
+  var rooms=[];
+  DATA.forEach(function(x){if(x.r!=="—"&&rooms.indexOf(x.r)<0)rooms.push(x.r);});
+  var sel=document.getElementById("room");
+  sel.innerHTML='<option value="all">全部地點</option>'+rooms.map(function(r){return '<option value="'+esc(r)+'">'+esc(r)+'</option>';}).join("");
+  sel.value=ST.room;
+}
+function syncUI(){
+  document.querySelectorAll("#days button").forEach(function(b){b.classList.toggle("on",b.dataset.day===ST.day);});
+  document.querySelectorAll(".chip").forEach(function(b){b.classList.toggle("on",b.dataset.t===ST.type);});
+  var on=document.querySelector("#days button.on");if(on&&on.scrollIntoView)on.scrollIntoView({inline:"center",block:"nearest"});
+}
+
+function nextSession(now){
+  var best=null;
+  DATA.forEach(function(x){
+    if(x.t==="oth")return;
+    if(ST.res!=="all"&&!(x.all||x.res.indexOf(ST.res)>=0))return;
+    if(x.iso>now.date||(x.iso===now.date&&x.sm>now.min)){
+      if(!best||x.iso<best.iso||(x.iso===best.iso&&x.sm<best.sm))best=x;
+    }
+  });
+  return best;
+}
+function banner(){
+  var n=taipeiNow(),el=document.getElementById("banner");
+  var live=DATA.filter(function(x){return x.iso===n.date&&n.min>=x.sm&&n.min<x.em&&(ST.res==="all"||x.all||x.res.indexOf(ST.res)>=0);});
+  var nx=nextSession(n),who=ST.res==="all"?"":"（"+fullName(ST.res)+"）";
+  var h="";
+  if(live.length)h+="現在進行中"+who+"：<b>"+esc(live[0].n+(live[0].sub?" "+live[0].sub:""))+"</b>（"+esc(live[0].r)+"）<br>";
+  if(nx)h+="下一堂"+who+"：<b>"+nx.d+"（"+wd(nx.d)+"）"+nx.s+"</b> "+esc(nx.n+(nx.sub?" "+nx.sub:""))+"｜"+esc(nx.r);
+  else if(!live.length)h="本季課表已全部結束。";
+  el.innerHTML=h;el.hidden=false;
+}
+
+document.addEventListener("click",function(e){
+  var s=e.target.closest&&e.target.closest("[data-star]");
+  if(!s)return;
+  var id=s.getAttribute("data-star");
+  if(MINE[id])delete MINE[id];else MINE[id]=1;
+  saveMine();
+  if(ST.type==="mine")render();
+  else{s.classList.toggle("on",!!MINE[id]);s.textContent=MINE[id]?"★":"☆";}
+});
+document.getElementById("q").addEventListener("input",function(e){ST.q=e.target.value.trim();draw();});
+document.getElementById("room").addEventListener("change",function(e){ST.room=e.target.value;draw();});
+document.getElementById("res").addEventListener("change",function(e){ST.res=e.target.value;saveRes();banner();draw();});
+document.getElementById("toggleAll").addEventListener("click",function(){ST.open=!ST.open;render();});
+document.getElementById("goNow").addEventListener("click",function(){
+  var n=taipeiNow(),nx=nextSession(n)||DATA[DATA.length-1];
+  ST.day=nx.d;ST.type="all";ST.q="";ST.room="all";document.getElementById("q").value="";
+  syncUI();buildRooms();draw();
+  var t=document.querySelector(".card.live");
+  if(!t){
+    var cur=n.date===nx.iso?n.min:0,best=null;
+    document.querySelectorAll(".slot").forEach(function(s){if(!best&&mm(s.textContent)>=cur)best=s;});
+    t=best;
+  }
+  if(t)t.scrollIntoView({behavior:"smooth",block:"center"});
+});
+
+(function init(){
+  var n=taipeiNow(),nx=nextSession(n);
+  ST.day=nx?nx.d:"all";
+  buildDays();buildChips();buildRes();buildRooms();syncUI();banner();draw();
+})();
+</script>
+</body>
+</html>
